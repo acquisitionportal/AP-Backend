@@ -59,16 +59,25 @@ app.post("/registerUser", async (req, res) => {
 
 app.post("/submitTest1", async (req, res) => {
   await dbConnect();
-  const user = new Test1User(req.body);
+  
+  const isUser = Test1User.find({email: req.body.email}).then((docs) => {
+    if(docs !== null ){
+      res.send("Test submitted successfully");
+    }else{
+      const user = new Test1User(req.body);
 
-  user.createdAt = new Date(Date.now());
-  user
-    .save()
-    .then(() => res.send("Test submitted successfully"))
-    .then(() => {
-      console.log("Test 1 Submitted");
-    })
-    .catch((err: Error) => res.status(500).send("Test Submission Failed"));
+      user.createdAt = new Date(Date.now());
+      user
+        .save()
+        .then(() => res.send("Test submitted successfully"))
+        .then(() => {
+          console.log("Test 1 Submitted");
+        })
+        .catch((err: Error) => res.status(500).send("Test Submission Failed"));
+    }
+  })
+  
+  
 });
 
 app.post("/submitTest2", async (req, res) => {
@@ -90,7 +99,7 @@ You will hear back from us in a few days
   
 KPMG Careers
     `,
-    html: `<div dir="ltr"><p style="color:rgb(0,0,0)"></p><div style="text-align:center"></div><p style="color:rgb(0,0,0)"><br></p><p style="color:rgb(0,0,0)">Hi ${req.body.name},</p><p style="color:rgb(0,0,0)">Thank you for successfully submitting your Online Technical Test. We appreciate the time and effort you have invested in this stage of the recruitment process.</p><p style="color:rgb(0,0,0)">Our team will now carefully review and evaluate your test performance. Please note that this process may take a little time, as we aim to ensure a thorough assessment for every candidate. We will be in touch with you shortly once the evaluation is complete, and we will inform you about the next steps in the process.</p><p style="color:rgb(0,0,0)">Thank you once again for your participation, and we wish you the best of luck!</p><p dir="ltr" style="line-height:1.467816;margin-right:14pt;text-align:justify;margin-top:0pt;margin-bottom:0pt"><span style="font-size:11pt;font-family:Arial,sans-serif;color:rgb(0,0,0);font-variant-ligatures:normal;font-variant-alternates:normal;font-variant-numeric:normal;font-variant-east-asian:normal;vertical-align:baseline;white-space:pre-wrap">Regards,</span></p><p dir="ltr" style="line-height:1.467816;margin-right:14pt;text-align:justify;margin-top:0pt;margin-bottom:0pt"><span style="font-size:11pt;font-family:Arial,sans-serif;color:rgb(0,0,0);font-variant-ligatures:normal;font-variant-alternates:normal;font-variant-numeric:normal;font-variant-east-asian:normal;vertical-align:baseline;white-space:pre-wrap">KPMG Talent Acquisition Team</span></p><p dir="ltr" style="line-height:1.656;margin-top:0pt;margin-bottom:0pt"><span style="font-size:11pt;font-family:Arial,sans-serif;color:rgb(11,83,148);font-variant-ligatures:normal;font-variant-alternates:normal;font-variant-numeric:normal;font-variant-east-asian:normal;vertical-align:baseline;white-space:pre-wrap">Power is a fundamental part of our world. That's why we're dedicated to improving people's lives and the environment with power management technologies that are more efficient, safe and reliable. Because that's what really matters. And we're here to make sure it works.</span></p><p dir="ltr" style="line-height:1.656;margin-top:0pt;margin-bottom:0pt"><span style="font-size:8pt;font-family:Arial,sans-serif;color:rgb(102,102,102);font-variant-ligatures:normal;font-variant-alternates:normal;font-variant-numeric:normal;font-variant-east-asian:normal;vertical-align:baseline;white-space:pre-wrap">Please note: This email is auto-generated and cannot accept replies The Online Technical Test requires a fee. Please proceed only if you are fully committed to participating process at own risk.</span></p><p style="color:rgb(0,0,0)"><br></p></div>`,
+    html: `<div dir="ltr"><p style="color:rgb(0,0,0)"></p><div style="text-align:center"></div><p style="color:rgb(0,0,0)"><br></p><p style="color:rgb(0,0,0)">Hi ${req.body.name},</p><p style="color:rgb(0,0,0)">Thank you for successfully submitting your Online Technical Test. We appreciate the time and effort you have invested in this stage of the recruitment process.</p><p style="color:rgb(0,0,0)">Our team will now carefully review and evaluate your test performance. Please note that this process may take a little time, as we aim to ensure a thorough assessment for every candidate. We will be in touch with you shortly once the evaluation is complete, and we will inform you about the next steps in the process.</p><p style="color:rgb(0,0,0)">Thank you once again for your participation, and we wish you the best of luck!</p><p dir="ltr" style="line-height:1.467816;margin-right:14pt;text-align:justify;margin-top:0pt;margin-bottom:0pt"><span style="font-size:11pt;font-family:Arial,sans-serif;color:rgb(0,0,0);font-variant-ligatures:normal;font-variant-alternates:normal;font-variant-numeric:normal;font-variant-east-asian:normal;vertical-align:baseline;white-space:pre-wrap">Regards,</span></p><p dir="ltr" style="line-height:1.467816;margin-right:14pt;text-align:justify;margin-top:0pt;margin-bottom:0pt"><span style="font-size:11pt;font-family:Arial,sans-serif;color:rgb(0,0,0);font-variant-ligatures:normal;font-variant-alternates:normal;font-variant-numeric:normal;font-variant-east-asian:normal;vertical-align:baseline;white-space:pre-wrap">KPMG Talent Acquisition Team</span></p><p dir="ltr" style="line-height:1.656;margin-top:0pt;margin-bottom:0pt"><span style="font-size:11pt;font-family:Arial,sans-serif;color:rgb(11,83,148);font-variant-ligatures:normal;font-variant-alternates:normal;font-variant-numeric:normal;font-variant-east-asian:normal;vertical-align:baseline;white-space:pre-wrap">Power is a fundamental part of our world. That's why we're dedicated to improving people's lives and the environment with power management technologies that are more efficient, safe and reliable. Because that's what really matters. And we're here to make sure it works.</span></p><p dir="ltr" style="line-height:1.656;margin-top:0pt;margin-bottom:0pt"><span style="font-size:8pt;font-family:Arial,sans-serif;color:rgb(102,102,102);font-variant-ligatures:normal;font-variant-alternates:normal;font-variant-numeric:normal;font-variant-east-asian:normal;vertical-align:baseline;white-space:pre-wrap">Please note: This email is auto-generated and cannot accept replies.</span></p><p style="color:rgb(0,0,0)"><br></p></div>`,
   };
   mailTransport
     .sendMail(mailOptions)
@@ -208,7 +217,10 @@ app.post("/status", async (req, res) => {
     .then((response) => {
       console.log("Response Status: ", response.data);
       console.log("Email: ", email);
-      if (response.data.success === true) {
+      if (
+        response.data.success === true &&
+        response.data.code === "PAYMENT_SUCCESS"
+      ) {
         Test1User.findOneAndUpdate(
           { email: email },
           { isPaidUser: true }
@@ -223,6 +235,16 @@ app.post("/status", async (req, res) => {
     .catch((err) => {
       console.error(err);
     });
+});
+
+app.get("/test1Status", async (req, res) => {
+  await dbConnect();
+  const email = req.query.email;
+  await Test1User.findOne({ email: email }).then((docs) => {
+    docs !== null
+      ? res.send({ testSubmitted: true })
+      : res.send({ testSubmitted: false });
+  });
 });
 
 app.get("/verifyPayment", async (req, res) => {
