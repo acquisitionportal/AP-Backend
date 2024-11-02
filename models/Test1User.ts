@@ -6,6 +6,8 @@ export interface Test1Users extends mongoose.Document {
   email: string;
   isPaidUser: boolean;
   isTest2Submitted: boolean;
+  transactionId: string;
+  transactionDate: Date;
   createdAt: Date;
 }
 
@@ -31,6 +33,12 @@ const Test1UserSchema = new mongoose.Schema<Test1Users>({
     default: false,
   },
   createdAt: {
+    type: Date,
+  },
+  transactionId: {
+    type: String,
+  },
+  transactionDate: {
     type: Date,
   },
 });

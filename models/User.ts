@@ -21,7 +21,6 @@ const UserSchema = new mongoose.Schema<Users>({
   },
   mobile: {
     type: Number,
-    required: true,
   },
   email: {
     type: String,
