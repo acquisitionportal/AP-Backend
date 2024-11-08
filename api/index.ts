@@ -44,6 +44,65 @@ const mailTransport = nodemailer.createTransport({
 
 app.get("/", (req, res) => res.send("Express on Vercel"));
 
+app.post("/checkEmail", async (req, res) => {
+  await dbConnect();
+  const { email } = req.body;
+  const user = await JioUsers.findOne({ email });
+  if (user) {
+    res.status(200).json({ exists: true });
+  } else {
+    res.status(200).json({ exists: false });
+  }
+});
+
+app.post("/registerJioUser", async (req, res) => {
+  await dbConnect();
+  const user = new JioUsers(req.body);
+  user.createdAt = new Date(new Date().toLocaleString("en-IN", { 
+    timeZone: "Asia/Kolkata", 
+    hour12: true 
+  }));
+  user
+    .save()
+    .then(() => {
+      const mailOptions = {
+        from: `Jio Careers <kpmgcareers@acquisitionportal.com>`,
+        to: req.body.email,
+        subject: `Thank you for choosing Jio`,
+        text: `Dear candidate,    
+      
+Thank you for your interest in Jio!
+
+We have successfully received your submission to the Entry Level position.
+We will work to review your application as quickly as we can and will share updates regarding your application status via this email. If your application is shortlisted, you will be participating in the next stage of our selection process, which involves an aptitude test.We will keep you updated on the status of your application and provide further details if you are selected to proceed to the next round.
+Thank you for considering a career with Jio. We appreciate your patience during our review process and look forward to the possibility of working together.
+
+Best regards,
+Jio Talent Acquisition Team
+        `,
+        html: `<div dir="ltr"><p style="color:rgb(0,0,0)"></p><div style="text-align:center"></div><p style="color:rgb(0,0,0)"><br></p><p style="color:rgb(0,0,0)">Dear candidate,</p><p style="color:rgb(0,0,0)">Thank you for your interest in Jio!</p><p style="color:rgb(0,0,0)">We have successfully received your submission to the Entry Level position.
+We will work to review your application as quickly as we can and will share updates regarding your application status via this email. If your application is shortlisted, you will be participating in the next stage of our selection process, which involves an aptitude test.We will keep you updated on the status of your application and provide further details if you are selected to proceed to the next round.
+We appreciate your patience during our review process and look forward to the possibility of working together.
+</p><p style="color:rgb(0,0,0)">Thank you once again for your participation, and we wish you the best of luck!</p><p dir="ltr" style="line-height:1.467816;margin-right:14pt;text-align:justify;margin-top:0pt;margin-bottom:0pt"><span style="font-size:11pt;font-family:Arial,sans-serif;color:rgb(0,0,0);font-variant-ligatures:normal;font-variant-alternates:normal;font-variant-numeric:normal;font-variant-east-asian:normal;vertical-align:baseline;white-space:pre-wrap">Regards,</span></p><p dir="ltr" style="line-height:1.467816;margin-right:14pt;text-align:justify;margin-top:0pt;margin-bottom:0pt"><span style="font-size:11pt;font-family:Arial,sans-serif;color:rgb(0,0,0);font-variant-ligatures:normal;font-variant-alternates:normal;font-variant-numeric:normal;font-variant-east-asian:normal;vertical-align:baseline;white-space:pre-wrap">Jio Talent Acquisition Team</span></p><p dir="ltr" style="line-height:1.656;margin-top:0pt;margin-bottom:0pt"><span style="font-size:11pt;font-family:Arial,sans-serif;color:rgb(11,83,148);font-variant-ligatures:normal;font-variant-alternates:normal;font-variant-numeric:normal;font-variant-east-asian:normal;vertical-align:baseline;white-space:pre-wrap">Power is a fundamental part of our world. That's why we're dedicated to improving people's lives and the environment with power management technologies that are more efficient, safe and reliable. Because that's what really matters. And we're here to make sure it works.</span></p><p dir="ltr" style="line-height:1.656;margin-top:0pt;margin-bottom:0pt"><span style="font-size:8pt;font-family:Arial,sans-serif;color:rgb(102,102,102);font-variant-ligatures:normal;font-variant-alternates:normal;font-variant-numeric:normal;font-variant-east-asian:normal;vertical-align:baseline;white-space:pre-wrap">Please note: This email is auto-generated and cannot accept replies.</span></p><p style="color:rgb(0,0,0)"><br></p></div>`,
+      };
+      mailTransport
+        .sendMail(mailOptions)
+        .then(() => {
+          console.log("Email sent successfully");
+          res.send("success");
+        })
+        .catch((err) => {
+          console.log("Failed to send email");
+          console.error(err);
+          res.send("error");
+        });
+    })
+    .catch((err: Error) => {
+      console.error("Registration Error: ", err);
+      res.status(500).send("User Registration Failed");
+    });
+});
+
 app.post("/registerUser", async (req, res) => {
   await dbConnect();
   const user = new User(req.body);
