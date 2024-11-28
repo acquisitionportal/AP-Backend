@@ -1,7 +1,7 @@
 import express from "express";
 import dbConnect from "../lib/dbConnect";
 import bodyParser from "body-parser";
-import cors from "cors";
+// import cors from "cors";
 require("dotenv").config();
 import crypto from "crypto";
 import User from "../models/User";
@@ -13,7 +13,7 @@ import SMTPPool from "nodemailer/lib/smtp-pool";
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+// app.use(cors());
 
 const PORT: number = 3000;
 
