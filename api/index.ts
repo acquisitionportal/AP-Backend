@@ -22,6 +22,7 @@ const merchant_id = process.env.MERCHANT_ID;
 const pg_uri = process.env.PG_URI;
 const redirect_uri = process.env.REDIRECT_URI;
 const frontend_uri = process.env.FRONTEND_URI;
+const frontend_uri_shellten = process.env.FRONTEND_URI_SHELLTEN;
 
 const godaddyEmail = "kpmgcareers@acquisitionportal.com";
 const godaddyPassword = "acquisition@A1";
@@ -313,7 +314,7 @@ app.post("/status", async (req, res) => {
             transactionDate: new Date(Date.now() + 19800000),
           }
         ).catch((err) => console.error("Payment update error: ", err));
-        const URL = `${frontend_uri}/technical-test`;
+        const URL = `${frontend_uri_shellten}/payment`;
         return res.redirect(URL);
       } else {
         const URL = `${frontend_uri}/payment-failed`;
