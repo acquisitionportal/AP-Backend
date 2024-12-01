@@ -165,7 +165,7 @@ app.get("/getUser", async (req, res) => {
 app.get("/test", async (req, res) => {
   await dbConnect();
   const test_id = req.query.test_id;
-  await Test.findOne({_id: test_id,})
+  await Test.findById(test_id)
     .then((docs) => {
       docs !== null ? 
       res.send(docs) 
