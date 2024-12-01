@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 
 export interface Tests extends mongoose.Document {
+    _id: ObjectId;
     test_id: string;
     isPaid: boolean;
     status: boolean;
@@ -19,6 +20,10 @@ export interface Tests extends mongoose.Document {
 }
 
 const TestSchema = new mongoose.Schema<Tests>({
+    _id: { 
+        type: mongoose.Types.ObjectId, 
+        required: true
+    },
     test_id: {
         type: String,
         required: true,
