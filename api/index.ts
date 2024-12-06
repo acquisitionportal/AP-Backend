@@ -357,7 +357,7 @@ app.post("/status", async (req, res) => {
             transactionDate: new Date(Date.now() + 19800000),
           }
         ).catch((err) => console.error("Payment update error: ", err));
-        const URL = `${frontend_uri_shellten}/payment`;
+        const URL = `${frontend_uri_shellten}/payment-success`;
         return res.redirect(URL);
       } else {
         const URL = `${frontend_uri_shellten}/payment-failed`;
